@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas — Download</title><link rel="icon" href="favicon.png">
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#05060a;color:#e9ecf3;font:15px/1.6 -apple-system,"Segoe UI",Inter,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px}
+main{max-width:460px;width:100%;text-align:center}
+img.logo{width:84px;height:84px;margin-bottom:22px}
+h1{font-size:30px;letter-spacing:.32em;font-weight:600;margin:0 0 8px;padding-left:.32em}
+p.tag{color:#8b93a7;margin:0 0 34px}
+a.btn{display:inline-block;background:#3b82f6;color:#fff;text-decoration:none;padding:13px 30px;border-radius:12px;font-weight:600}
+a.btn:hover{background:#2f6fdc}
+a.btn[aria-disabled=true]{background:#1a1d27;color:#6b7388;pointer-events:none}
+.meta{margin-top:16px;color:#6b7388;font-size:13px}
+.meta a{color:#8b93a7}
+</style></head><body><main>
+<img class="logo" src="logo.png" alt="Atlas">
+<h1>ATLAS</h1>
+<p class="tag">Intelligence that stays with you.</p>
+<a id="dl" class="btn" aria-disabled="true" href="#">Checking latest version…</a>
+<div class="meta" id="meta">Windows 10 / 11 · 64-bit</div>
+<script>
+(async()=>{
+ const a=document.getElementById('dl'),m=document.getElementById('meta');
+ try{
+  const r=await fetch('https://api.github.com/repos/nanoliteus-dotcom/atlas-releases/releases/latest');
+  if(!r.ok) throw 0;
+  const j=await r.json();
+  const asset=(j.assets||[]).find(x=>/Atlas-Setup.*\.exe$/i.test(x.name));
+  if(!asset) throw 0;
+  a.href=asset.browser_download_url;a.textContent='Download for Windows';a.removeAttribute('aria-disabled');
+  m.textContent='Version '+String(j.tag_name||'').replace(/^v/,'')+' · '+(asset.size/1048576).toFixed(0)+' MB · Windows 10 / 11';
+ }catch(e){
+  a.textContent='Coming soon';
+  m.innerHTML='First release is being prepared.';
+ }
+})();
+</script></main></body></html>
